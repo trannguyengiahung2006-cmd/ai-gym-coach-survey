@@ -2632,11 +2632,10 @@ Dựa trên thông tin này, hãy đưa ra lời khuyên ngắn gọn (3-4 câu)
           </div>
         );
       }
-      // ════════════════════════════════════════════════════════════════
+     // ════════════════════════════════════════════════════════════════
       // ROOT APP
       // ════════════════════════════════════════════════════════════════
       function App() {
-        // 1. Kiểm tra API Key và các State khởi tạo
         const [hasKey, setHasKey] = useState(
           !!localStorage.getItem("GEMINI_API_KEY"),
         );
@@ -2656,7 +2655,6 @@ Dựa trên thông tin này, hãy đưa ra lời khuyên ngắn gọn (3-4 câu)
           { id: "nutrition", icon: "🥗", label: "Dinh dưỡng" },
         ];
 
-        // 2. Điều hướng các màn hình lúc mới vào web
         if (!hasKey) return <ApiKeySetup onDone={() => setHasKey(true)} />;
         if (screen === "disclaimer")
           return <Disclaimer onAgree={() => setScreen("onboarding")} />;
@@ -2670,7 +2668,6 @@ Dựa trên thông tin này, hãy đưa ra lời khuyên ngắn gọn (3-4 câu)
             />
           );
 
-        // 3. Giao diện chính của App
         return (
           <div
             style={{
@@ -2690,7 +2687,6 @@ Dựa trên thông tin này, hãy đưa ra lời khuyên ngắn gọn (3-4 câu)
                 height: "100vh",
               }}
             >
-              {/* Modal Đổi Mục Tiêu */}
               {showModal && (
                 <GoalModal
                   profile={profile}
@@ -2703,7 +2699,7 @@ Dựa trên thông tin này, hãy đưa ra lời khuyên ngắn gọn (3-4 câu)
                 />
               )}
 
-              {/* Header */}
+              {/* Header CÓ NÚT ĐỔI KEY */}
               <div
                 style={{
                   background: C.surface,
@@ -2733,28 +2729,52 @@ Dựa trên thông tin này, hãy đưa ra lời khuyên ngắn gọn (3-4 câu)
                     )}
                   </div>
                 </div>
-                <button
-                  onClick={() => setShowModal(true)}
-                  style={{
-                    background: C.card,
-                    border: `1px solid ${C.accent}`,
-                    borderRadius: 20,
-                    padding: "4px 12px",
-                    fontSize: 11,
-                    color: C.accent,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 5,
-                  }}
-                >
-                  {profile.goal}{" "}
-                  <span style={{ fontSize: 10, opacity: 0.7 }}>✏️</span>
-                </button>
+                
+                {/* Khu vực chứa 2 nút: Đổi Key và Đổi Mục tiêu */}
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <button
+                    onClick={() => {
+                      if(window.confirm("Bạn có chắc muốn xóa API Key hiện tại để nhập lại không?")) {
+                        localStorage.removeItem("GEMINI_API_KEY");
+                        window.location.reload();
+                      }
+                    }}
+                    style={{
+                      background: "transparent",
+                      border: `1px solid ${C.border}`,
+                      borderRadius: 14,
+                      padding: "4px 8px",
+                      fontSize: 10,
+                      color: C.muted,
+                      cursor: "pointer",
+                      transition: "all 0.2s"
+                    }}
+                  >
+                    Đổi Key 🔄
+                  </button>
+                  <button
+                    onClick={() => setShowModal(true)}
+                    style={{
+                      background: C.card,
+                      border: `1px solid ${C.accent}`,
+                      borderRadius: 20,
+                      padding: "4px 12px",
+                      fontSize: 11,
+                      color: C.accent,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 5,
+                    }}
+                  >
+                    {profile.goal}{" "}
+                    <span style={{ fontSize: 10, opacity: 0.7 }}>✏️</span>
+                  </button>
+                </div>
               </div>
 
-              {/* Content (Các Tab) */}
+              {/* Content */}
               <div
                 style={{
                   flex: 1,
